@@ -12,4 +12,3 @@ CraneCrane::~CraneCrane()
     clock_t nDiff = clock() - this->tNow;
     std::cout<<"Timer :"<<((float)nDiff)/CLOCKS_PER_SEC<<" Sec"<<std::endl; //report progress time (sec)
 }
-

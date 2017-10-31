@@ -1,6 +1,6 @@
 #include "h_crane.h"
 
-class Crain : public CraneCrane
+class Crain : public CraneCrane, public motor
 {
 private:
     ev3dev::touch_sensor touch_q;
@@ -98,12 +98,14 @@ void Crain::example_code()
 { //This function is for example, you should develop your own logics
     while(get_escape() == false)
     {
+        
         set_down(ev3dev::button::down.pressed());
         set_up(ev3dev::button::up.pressed());
         set_right(ev3dev::button::right.pressed());
         set_left(ev3dev::button::left.pressed());
         set_escape(ev3dev::button::back.pressed());
         set_enter(ev3dev::button::enter.pressed());
+        
         
         if(get_up())
         {   
@@ -118,12 +120,14 @@ void Crain::example_code()
         if(get_left())
         {
                b.set_speed_sp(get_speed());
-               b.run_forever();
+               b.run_to_rel_pos(motor::set_position(100));
+               //b.run_forever();
         }
         if(get_right())
         {
                b.set_speed_sp(-1* get_speed());
-               b.run_forever();
+               b.run_to_rel_pos(motor::set_position(-100));
+               //b.run_forever();
         }
        
        

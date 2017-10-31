@@ -4,9 +4,9 @@ class Crain : public CraneCrane
 {
 private:
     ev3dev::touch_sensor touch_q;
-    ev3dev::motor a;
-    ev3dev::motor b; 
-    ev3dev::motor c;
+    ev3dev::motor a; // 집게 움직임
+    ev3dev::motor b; // 상하움직임
+    ev3dev::motor c; // 좌우움직임
     
 public:
     // Hardware Configuration
@@ -54,7 +54,7 @@ public:
 
     virtual int  get_speed()
     {
-        return 100;
+        return 1000;
     }
 
     virtual void set_down(bool val)
@@ -125,7 +125,6 @@ void Crain::example_code()
                b.set_speed_sp(-1* get_speed());
                b.run_forever();
         }
-        if()
        
        
         if(!(get_up() | get_down() | get_right() | get_left() | get_enter()))
@@ -139,6 +138,7 @@ void Crain::example_code()
 
     a.stop();
     b.stop();
+    //c.stop();
 }
 
 int main()

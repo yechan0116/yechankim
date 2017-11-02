@@ -4,9 +4,9 @@ class Crain : public CraneCrane
 {
 private:
     ev3dev::touch_sensor touch_q;
-    ev3dev::motor a; // 집게 움직임
-    ev3dev::motor b; // 상하움직임
-    ev3dev::motor c; // 좌우움직임
+    ev3dev::motor a; // 상하
+    ev3dev::motor b; // 좌우
+    ev3dev::motor c; // 집게
     
 public:
     // Hardware Configuration
@@ -141,10 +141,44 @@ void Crain::example_code()
     a.stop();
     b.stop();
     */
+    
+    //상하움직임
+    b.set_position_sp(300);
+    std::cout<<b.position_sp()<<std::endl;
+    b.set_speed_sp(200);
+    std::cout<<b.speed_sp()<<std::endl;
+    b.set_command("run-to-rel-pos");
+    sleep(3);
+    
+    //내리고
     a.set_position_sp(300);
     std::cout<<a.position_sp()<<std::endl;
     a.set_speed_sp(200);
-    std::cout<<b.speed_sp()<<std::endl;
+    std::cout<<a.speed_sp()<<std::endl;
+    a.set_command("run-to-rel-pos");
+    sleep(3);
+    
+    //벌리고
+    c.set_position_sp(200);
+    std::cout<<c.position_sp()<<std::endl;
+    c.set_speed_sp(200);
+    std::cout<<c.speed_sp()<<std::endl;
+    c.set_command("run-to-rel-pos");
+    sleep(3);
+    
+    //집고
+    c.set_position_sp(-200);
+    std::cout<<c.position_sp()<<std::endl;
+    c.set_speed_sp(200);
+    std::cout<<c.speed_sp()<<std::endl;
+    c.set_command("run-to-rel-pos");
+    sleep(3);
+    
+    //올리고
+    a.set_position_sp(-300);
+    std::cout<<a.position_sp()<<std::endl;
+    a.set_speed_sp(200);
+    std::cout<<a.speed_sp()<<std::endl;
     a.set_command("run-to-rel-pos");
     sleep(3);
     

@@ -149,19 +149,64 @@ void Crain::my_code()
     b.stop();
     */
     
-    //START지점 초기화, 집게 벌려두기
+    //a상하     b좌우       c집게 
+    
+    //START지점 초기화, 크레인 높이 초기화, 집게 벌려두기
     b.set_position_sp(-480);
     b.set_speed_sp(400);
     b.set_command("run-to-abs-pos");
-    sleep(3)
+    sleep(2)
+    a.set_position_sp(110);
+    a.set_speed_sp(400);
+    a.set_command("run-to-abs-pos");
+    sleep(2);
     c.set_position_sp(70);
     c.set_speed_sp(400);
     c.set_command("run-to-rel-pos");
-    sleep(1);
-
-    //시게방향 움직임
-    if (detecting() < 10)
+    sleep(2);
+    
+    while (1)
     {
+        if(b.set_position_sp() == 90)
+        {
+            a.set_position_sp(270);
+            a.set_speed_sp(400);
+            a.set_command("run-to-abs-pos");
+            sleep(2);
+            c.set_position_sp(70);
+            c.set_speed_sp(400);
+            c.set_command("run-to-rel-pos");
+            sleep(2);
+            a.set_position_sp(110);
+            a.set_speed_sp(400);
+            a.set_command("run-to-abs-pos");
+            sleep(2);
+            b.set_position_sp(-480);
+            b.set_speed_sp(400);
+            b.set_command("run-to-abs-pos");
+        }
+        if(detecting() < 15)
+        {
+            b.stop();
+            a.set_position_sp(270);
+            a.set_speed_sp(300);
+            a.set_command("run-to-abs-pos");
+            sleep(2);
+            c.set_position_sp(-70);
+            c.set_speed_sp(200);
+            c.set_command("run-to-rel-pos");
+            sleep(2);
+            a.set_position_sp(110);
+            a.set_speed_sp(400);
+            a.set_command("run-to-abs-pos");
+            sleep(2);
+        }
+        b.set_position_sp(10);
+        b.set_speed_sp(400);
+        b.set_command("run-to-rel-pos");
+        sleep(1)
+    }
+    /*
     b.set_position_sp(90);
     b.set_speed_sp(200);
     b.set_command("run-to-abs-pos");
@@ -192,7 +237,7 @@ void Crain::my_code()
     a.set_command("run-to-rel-pos");
     sleep(3);
     }
-    
+    */    
 }
 
 int main()

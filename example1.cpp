@@ -1,6 +1,6 @@
 #include "h_crane.h"
 
-class Crain : public CraneCrane, public motor
+class Crain : public CraneCrane
 {
 private:
     ev3dev::touch_sensor touch_q;
@@ -56,7 +56,7 @@ public:
     {
         return 1000;
     }
-
+    
     virtual void set_down(bool val)
     {
         m_down = val;
@@ -96,9 +96,9 @@ public:
 
 void Crain::example_code()
 { //This function is for example, you should develop your own logics
-    while(get_escape() == false)
-    {
-        
+    //while(get_escape() == false)
+    //{
+        /*
         set_down(ev3dev::button::down.pressed());
         set_up(ev3dev::button::up.pressed());
         set_right(ev3dev::button::right.pressed());
@@ -120,14 +120,12 @@ void Crain::example_code()
         if(get_left())
         {
                b.set_speed_sp(get_speed());
-               b.run_to_rel_pos(motor::set_position(100));
-               //b.run_forever();
+               b.run_forever();
         }
         if(get_right())
         {
                b.set_speed_sp(-1* get_speed());
-               b.run_to_rel_pos(motor::set_position(-100));
-               //b.run_forever();
+               b.run_forever();
         }
        
        
@@ -142,7 +140,18 @@ void Crain::example_code()
 
     a.stop();
     b.stop();
-    //c.stop();
+    */
+    a.set_position_sp(300);
+    std::cout<<a.position_sp()<<std::endl;
+    a.set_speed_sp(200);
+    std::cout<<b.speed_sp()<<std::endl;
+    a.set_command("run-to-rel-pos");
+    sleep(3);
+    
+    //c.set_speed_sp(-1* get_speed());
+    //c.run_forever();
+    //c.set_speed_sp(get_speed());
+    
 }
 
 int main()

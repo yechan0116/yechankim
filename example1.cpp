@@ -96,6 +96,7 @@ public:
     {
         m_speed = val;    
     }
+    
 public:
     void example_code();
 };
@@ -148,18 +149,18 @@ void Crain::example_code()
     b.stop();
     */
     
-    if (detecting() > 0 )
-    {
+    
     //시게방향 움직임
-    b.set_position_sp(300);
+    b.set_position_sp(100);
     std::cout<<b.position_sp()<<std::endl;
     b.set_speed_sp(200);
     std::cout<<b.speed_sp()<<std::endl;
     b.set_command("run-to-rel-pos");
     sleep(3);
     
+    //if (detecting())
     //내리고
-    a.set_position_sp(300);
+    a.set_position_sp(160);
     std::cout<<a.position_sp()<<std::endl;
     a.set_speed_sp(200);
     std::cout<<a.speed_sp()<<std::endl;
@@ -167,7 +168,7 @@ void Crain::example_code()
     sleep(3);
     
     //벌리고
-    c.set_position_sp(200);
+    c.set_position_sp(65);
     std::cout<<c.position_sp()<<std::endl;
     c.set_speed_sp(200);
     std::cout<<c.speed_sp()<<std::endl;
@@ -175,7 +176,7 @@ void Crain::example_code()
     sleep(3);
     
     //집고
-    c.set_position_sp(-200);
+    c.set_position_sp(-60);
     std::cout<<c.position_sp()<<std::endl;
     c.set_speed_sp(200);
     std::cout<<c.speed_sp()<<std::endl;
@@ -183,7 +184,7 @@ void Crain::example_code()
     sleep(3);
     
     //올리고
-    a.set_position_sp(-300);
+    a.set_position_sp(-100);
     std::cout<<a.position_sp()<<std::endl;
     a.set_speed_sp(200);
     std::cout<<a.speed_sp()<<std::endl;
@@ -193,7 +194,7 @@ void Crain::example_code()
     //c.set_speed_sp(-1* get_speed());
     //c.run_forever();
     //c.set_speed_sp(get_speed());
-    }
+    
 }
 
 int main()

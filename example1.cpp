@@ -4,13 +4,14 @@ class Crain : public CraneCrane
 {
 private:
     ev3dev::touch_sensor touch_q;
+    ev3dev::infrared_sensor infrared_q; // 적외선 센서
     ev3dev::motor a; // 상하
     ev3dev::motor b; // 좌우
     ev3dev::motor c; // 집게
     
 public:
     // Hardware Configuration
-    Crain():m_speed(0), touch_q(ev3dev::INPUT_2),a(ev3dev::OUTPUT_B), b(ev3dev::OUTPUT_C), c(ev3dev::OUTPUT_A)
+    Crain():m_speed(0), touch_q(ev3dev::INPUT_2), infrared_q(ev3dev::INPUT_1), a(ev3dev::OUTPUT_B), b(ev3dev::OUTPUT_C), c(ev3dev::OUTPUT_A)
     {
         
     }
@@ -20,6 +21,11 @@ public:
     bool get_touch_pressed()
     {
         return touch_q.is_pressed();
+    }
+    
+    int detecting()
+    {
+        return infrared_q.proximity();
     }
     
     virtual bool get_down()
@@ -142,7 +148,9 @@ void Crain::example_code()
     b.stop();
     */
     
-    //상하움직임
+    if (detecting() > 0 )
+    {
+    //시게방향 움직임
     b.set_position_sp(300);
     std::cout<<b.position_sp()<<std::endl;
     b.set_speed_sp(200);
@@ -185,7 +193,7 @@ void Crain::example_code()
     //c.set_speed_sp(-1* get_speed());
     //c.run_forever();
     //c.set_speed_sp(get_speed());
-    
+    }
 }
 
 int main()

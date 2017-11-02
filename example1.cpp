@@ -4,14 +4,14 @@ class Crain : public CraneCrane
 {
 private:
     ev3dev::touch_sensor touch_q;
-    ev3dev::infrared_sensor infrared_q; // 적외선 센서
+    ev3dev::ultrasonic_sensor ultrasonic_q; // 적외선 센서
     ev3dev::motor a; // 상하
     ev3dev::motor b; // 좌우
     ev3dev::motor c; // 집게
     
 public:
     // Hardware Configuration
-    Crain():m_speed(0), touch_q(ev3dev::INPUT_2), infrared_q(ev3dev::INPUT_1), a(ev3dev::OUTPUT_B), b(ev3dev::OUTPUT_C), c(ev3dev::OUTPUT_A)
+    Crain():m_speed(0), touch_q(ev3dev::INPUT_2), ultrasonic_q(ev3dev::INPUT_1), a(ev3dev::OUTPUT_B), b(ev3dev::OUTPUT_C), c(ev3dev::OUTPUT_A)
     {
         
     }
@@ -25,7 +25,7 @@ public:
     
     int detecting()
     {
-        return infrared_q.proximity();
+        return ultrasonic_q.distance_centimeters();
     }
     
     virtual bool get_down()
@@ -98,10 +98,10 @@ public:
     }
     
 public:
-    void example_code();
+    void my_code();
 };
 
-void Crain::example_code()
+void Crain::my_code()
 { //This function is for example, you should develop your own logics
     //while(get_escape() == false)
     //{
@@ -149,51 +149,49 @@ void Crain::example_code()
     b.stop();
     */
     
-    
+    //START지점 초기화, 집게 벌려두기
+    b.set_position_sp(-480);
+    b.set_speed_sp(400);
+    b.set_command("run-to-abs-pos");
+    sleep(3)
+    c.set_position_sp(70);
+    c.set_speed_sp(400);
+    c.set_command("run-to-rel-pos");
+    sleep(1);
+
     //시게방향 움직임
-    b.set_position_sp(100);
-    std::cout<<b.position_sp()<<std::endl;
+    if (detecting() < 10)
+    {
+    b.set_position_sp(90);
     b.set_speed_sp(200);
-    std::cout<<b.speed_sp()<<std::endl;
-    b.set_command("run-to-rel-pos");
+    b.set_command("run-to-abs-pos");
     sleep(3);
     
-    //if (detecting())
+    
     //내리고
     a.set_position_sp(160);
-    std::cout<<a.position_sp()<<std::endl;
     a.set_speed_sp(200);
-    std::cout<<a.speed_sp()<<std::endl;
     a.set_command("run-to-rel-pos");
     sleep(3);
     
     //벌리고
-    c.set_position_sp(65);
-    std::cout<<c.position_sp()<<std::endl;
+    c.set_position_sp(70);
     c.set_speed_sp(200);
-    std::cout<<c.speed_sp()<<std::endl;
     c.set_command("run-to-rel-pos");
-    sleep(3);
+    sleep(1);
     
     //집고
-    c.set_position_sp(-60);
-    std::cout<<c.position_sp()<<std::endl;
+    c.set_position_sp(-70);
     c.set_speed_sp(200);
-    std::cout<<c.speed_sp()<<std::endl;
     c.set_command("run-to-rel-pos");
-    sleep(3);
+    sleep(1);
     
     //올리고
-    a.set_position_sp(-100);
-    std::cout<<a.position_sp()<<std::endl;
+    a.set_position_sp(-200);
     a.set_speed_sp(200);
-    std::cout<<a.speed_sp()<<std::endl;
     a.set_command("run-to-rel-pos");
     sleep(3);
-    
-    //c.set_speed_sp(-1* get_speed());
-    //c.run_forever();
-    //c.set_speed_sp(get_speed());
+    }
     
 }
 
@@ -204,7 +202,7 @@ int main()
         if(crain.get_touch_pressed()==true){ 
             
         
-        crain.example_code(); //This line is for example, you should erase this ex_code in your 'real code' 
+        crain.my_code(); //This line is for example, you should erase this ex_code in your 'real code' 
   
         }
     }

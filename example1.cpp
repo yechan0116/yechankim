@@ -152,10 +152,11 @@ void Crain::my_code()
     //a상하     b좌우       c집게 
     
     //START지점 초기화, 크레인 높이 초기화, 집게 벌려두기
-    b.set_position_sp(-480);
+    
+    b.set_position_sp(0);
     b.set_speed_sp(400);
     b.set_command("run-to-abs-pos");
-    sleep(2)
+    sleep(2);
     a.set_position_sp(110);
     a.set_speed_sp(400);
     a.set_command("run-to-abs-pos");
@@ -167,45 +168,56 @@ void Crain::my_code()
     
     while (1)
     {
-        if(b.set_position_sp() == 90)
+        if(b.position_sp() == 560)   // END 지점이면
         {
+            //내린다
             a.set_position_sp(270);
             a.set_speed_sp(400);
             a.set_command("run-to-abs-pos");
             sleep(2);
+            //집게를 벌린다
             c.set_position_sp(70);
             c.set_speed_sp(400);
             c.set_command("run-to-rel-pos");
             sleep(2);
+            //올린다
             a.set_position_sp(110);
             a.set_speed_sp(400);
             a.set_command("run-to-abs-pos");
             sleep(2);
-            b.set_position_sp(-480);
+            // START 지점으로 간다
+            b.set_position_sp(0);
             b.set_speed_sp(400);
             b.set_command("run-to-abs-pos");
+            sleep(2);
         }
-        if(detecting() < 15)
+        if(detecting() < 15)    // item 감지하면
         {
-            b.stop();
+            // 좌우모터 멈춘다
+            //b.stop();
+            b.set_stop_action("hold"); // hold 함수
+            // 내린다
             a.set_position_sp(270);
             a.set_speed_sp(300);
             a.set_command("run-to-abs-pos");
             sleep(2);
+            // 집게를 오므린다
             c.set_position_sp(-70);
             c.set_speed_sp(200);
             c.set_command("run-to-rel-pos");
             sleep(2);
+            // 올린다
             a.set_position_sp(110);
             a.set_speed_sp(400);
             a.set_command("run-to-abs-pos");
             sleep(2);
         }
+        // 좌우모터 10씩 이동
         b.set_position_sp(10);
         b.set_speed_sp(400);
         b.set_command("run-to-rel-pos");
-        sleep(1)
-    }
+        sleep(1);
+    };
     /*
     b.set_position_sp(90);
     b.set_speed_sp(200);

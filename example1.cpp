@@ -2,10 +2,10 @@
 #include <stack>
 
 #define STARTPOS 0
-#define ENDPOS 552
-#define ITEMPOS 15
-#define UP -280
-#define DOWN -80
+#define ENDPOS 550
+#define ITEMPOS 10.0
+#define UP -250
+#define DOWN 0
 
 class Crain : public CraneCrane
 {
@@ -110,22 +110,122 @@ public:
 
 void Crain::my_code()
 {
-    //a상하     b좌우       c집게 
+    /*
+    a.reset();
+    b.reset();
+    c.reset();
     
-    //START지점 초기화
+    a.set_position_sp(-300);
+    a.set_speed_sp(300);
+    a.set_command("run-to-abs-pos");
+    
+    
+    while(1)
+    {
+        if (detecting() > 10)
+        {
+            a.set_speed_sp(-0.1);
+            a.run_forever();
+            break;
+        }
+    }
+    sleep(1);
+    
+    
+    for(int i=0; i<3; i++)
+    {
+        
+        while (true)
+        {
+            if (detecting() <= 10)
+            {
+                b.stop();
+                b.set_position_sp(20);
+                b.set_speed_sp(300);
+                b.run_to_rel_pos();
+                b.stop();
+                break;
+            }
+        }
+        sleep(1);
+        
+        b.set_position_sp(550);
+        b.set_speed_sp(300);
+        b.run_to_abs_pos();
+        b.stop_action();
+        
+        a.set_position_sp(0);
+        a.set_speed_sp(90);
+        a.run_to_abs_pos();
+        a.stop_action();
+        sleep(1);
+        
+        c.set_speed_sp(300);
+        c.run_forever();
+        sleep(1);
+        
+        a.set_position_sp(-200);
+        a.set_speed_sp(300);
+        a.run_to_rel_pos();
+        a.stop_action();
+        
+        b.set_speed_sp(300);
+        b.set_position_sp(550);
+        b.run_to_abs_pos();
+        sleep(1);
+        
+        a.set_position_sp(20);
+        a.set_speed_sp(100);
+        a.run_to_rel_pos();
+        sleep(1);
+        
+        c.set_speed_sp(300);
+        c.set_position_sp(0);
+        c.run_to_abs_pos();
+        sleep(0.9);
+        
+        if(i==2) break;
+        
+        a.set_position_sp(-300);
+        a.set_speed_sp(200);
+        a.run_to_abs_pos();
+
+        while(true)
+        {
+            if (detecting() >= 40)
+            {
+                a.set_speed_sp(-0.73);
+                a.run_forever();
+                break;
+            }
+        }
+        b.set_position_sp(10);
+        b.set_speed_sp(get_speed());
+        b.run_to_abs_pos();
+    }
+*/
+    a.reset();
+    b.reset();
+    c.reset();
+    
+    
     b.set_position_sp(STARTPOS);
     b.set_speed_sp(500);
     b.set_command("run-to-abs-pos");
-    //sleep(2);
+    sleep(2);
+    
     //크레인 높이 초기화
     a.set_position_sp(UP);
-    a.set_speed_sp(500);
+    a.set_speed_sp(700);
     a.set_command("run-to-abs-pos");
-    a.set_stop_action("hold");
-    a.set_command("stop");
+    a.set_speed_sp(7);
+    a.run_forever();
+    //a.set_stop_action("hold");
+    //a.set_command("stop");
     //sleep(2);
+    
     //집게 벌려두기
-    c.set_position_sp(70);
+    c.set_position_sp(0);
     c.set_speed_sp(500);
     c.set_command("run-to-abs-pos");
     sleep(2);
@@ -134,54 +234,64 @@ void Crain::my_code()
     std::stack<int> s;
     while(1)
     {
-        a.reset();
-        b.reset();
-        c.reset();
-        // move END 지점
-        b.set_position_sp(ENDPOS);
+        // END 지점으로 이동
+        b.set_position_sp(5);
         b.set_speed_sp(500);
-        b.set_command("run-to-abs-pos");
+        b.set_command("run-to-rel-pos");
+        //sleep(1);
+        //b.set_position_sp(ENDPOS);
+        //b.set_speed_sp(300);
+        //b.run_forever();
+        //b.set_command("run-to-abs-pos");
         //sleep(2);
         
-        // 타이어를 탐지하면
-        if(detecting() < ITEMPOS)
+        if (detecting() < ITEMPOS)// 타이어를 탐지하면
         {
-            b.stop();
-            s.push(b.position_sp());
-            //sleep(2);
+            s.push(b.position_sp()); // 위치조정
+            std::cout << b.position_sp() << std::endl;
+            std::cout << s.top() << std::endl;
         }
         
         // END 지점이면
-        if(b.position_sp() == ENDPOS) // 값 조정할것
+        if(b.position_sp() == ENDPOS)
         {
+            b.stop();
+            while(1)
+            {
             // 타이어 위치로 이동
-            b.set_position_sp(s.top()-10);
+            b.set_position_sp(s.top());
             s.pop();
-            b.set_speed_sp(300);
+            b.set_speed_sp(500);
             b.set_command("run-to-abs-pos");
             sleep(2);
             // 내린다
             a.set_position_sp(DOWN);
-            a.set_speed_sp(300);
+            a.set_speed_sp(500);
             a.set_command("run-to-abs-pos");
             sleep(2);
             // 집게를 오므린다
-            c.set_position_sp(0);
-            c.set_speed_sp(200);
-            c.set_command("run-to-abs-pos");
-            sleep(2);
+            c.set_position_sp(-70);
+            c.set_speed_sp(500);
+            c.set_command("run-to-rel-pos");
+            //sleep(2);
             // 올린다
             a.set_position_sp(UP);
-            a.set_speed_sp(400);
+            a.set_speed_sp(500);
             a.set_command("run-to-abs-pos");
-            a.set_stop_action("hold");
+            a.set_stop_action("brake");
             a.set_command("stop");
             sleep(2);
+            }
+            if(s.empty())
+                break;
         }
-        if(s.empty())
-            break;
+        
+        
+        a.stop();
+        b.stop();
+        c.stop();
      };
-     
+}     
      /*   
         if(b.position_sp() == 0)   // END 지점이면
         {
@@ -233,7 +343,7 @@ void Crain::my_code()
         b.set_command("run-to-rel-pos");
         sleep(1);
     */
-}
+
 
 int main()
 {     
@@ -241,9 +351,9 @@ int main()
     while(true){
         if(crain.get_touch_pressed()==true){ 
             
-        
-        crain.my_code(); //This line is for example, you should erase this ex_code in your 'real code' 
-  
+        Crain* crain = new Crain;
+        crain->my_code(); //This line is for example, you should erase this ex_code in your 'real code' 
+        delete crain;
         }
     }
 }

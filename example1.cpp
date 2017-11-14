@@ -3,7 +3,7 @@
 
 #define STARTPOS 0
 #define ENDPOS 550
-#define ITEMPOS 10.0
+#define ITEMPOS 13.0
 #define UP -250
 #define DOWN 0
 

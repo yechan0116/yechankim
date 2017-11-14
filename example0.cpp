@@ -124,10 +124,10 @@ void Crain::go_up()
     //up
     a.set_position_sp(-200);
     a.set_speed_sp(700);
-    a.set_command("run-to-rel-pos");
+    a.set_command("run-to-abs-pos");
     while(true)
     {
-        if (distance() > 10)
+        if (distance() > 13.0)
         {
             a.set_speed_sp(-2);
             a.run_forever();
@@ -202,28 +202,30 @@ void Crain::go_down_and_open()
 
 void Crain::my_code()
 {
-    a.reset();
+    //a.reset();
     b.reset();
     c.reset();
     
     Crain::go_up();
+    /*
     for (int i=0;i<3;i++)
     {
-    Crain::move_to_detect();
-    sleep(0.9);
-    
-    Crain::move_to_target();
-    sleep(1);
-    
-    Crain::pick_and_up();
-    Crain::move_to_finish();
-    Crain::go_down_and_open();
-    if (i == 2)
-    break;
-    Crain::go_up();
-    Crain::move_to_start();
-    sleep(2);
+        Crain::move_to_detect();
+        sleep(0.9);
+        
+        Crain::move_to_target();
+        sleep(1);
+        
+        Crain::pick_and_up();
+        Crain::move_to_finish();
+        Crain::go_down_and_open();
+        if (i == 2)
+            break;
+        Crain::go_up();
+        Crain::move_to_start();
+        sleep(2);
     }
+    */
         
 }
 

@@ -344,7 +344,6 @@ void Crain::my_code()
         sleep(1);
     */
 
-
 int main()
 {     
     Crain crain;
@@ -352,7 +351,7 @@ int main()
         if(crain.get_touch_pressed()==true){ 
             
         Crain* crain = new Crain;
-        crain->my_code(); //This line is for example, you should erase this ex_code in your 'real code' 
+        crain->my_code(); 
         delete crain;
         }
     }

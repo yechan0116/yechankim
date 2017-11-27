@@ -124,10 +124,10 @@ void Crain::go_up()
     //up
     a.set_position_sp(-200);
     a.set_speed_sp(700);
-    a.set_command("run-to-abs-pos");
+    a.set_command("run-to-rel-pos");
     while(true)
     {
-        if (distance() > 13.0)
+        if (distance() > 11.0)
         {
             a.set_speed_sp(-2);
             a.run_forever();
@@ -144,7 +144,7 @@ void Crain::move_to_detect()
     b.run_forever();
     while (1)
     {
-        if (distance() <= 10)
+        if (distance() <= 11.0)
         {
             b.stop();
             

@@ -1,8 +1,6 @@
-    //a가 위아래, b양옆, c 집게
-
 #include "h_crane.h"
-
-
+ 
+ 
 class Crain : public CraneCrane
 {
 private:
@@ -36,32 +34,32 @@ public:
     {
         return m_down;
     }
-
+ 
     virtual bool get_up()
     {
         return m_up;
     }
-
+ 
     virtual bool get_right()
     {
         return m_right;
     }
-
+ 
     virtual bool get_left()
     {
         return m_left;
     }
-
+ 
     virtual bool get_enter()
     {
         return m_enter;
     }
-
+ 
     virtual bool get_escape()
     {
         return m_escape;
     }
-
+ 
     virtual int  get_speed()
     {
         return 350;
@@ -95,102 +93,84 @@ public:
     {
         m_escape = val;    
     }
-
+ 
     virtual void set_speed(int val)
     {
         m_speed = val;    
     }
 public:
-    void my_code();
-    void move_to_start();
-    void go_up();
-    void move_to_detect();
+    void yechan_code();
+    void go_up(float speed);
+    void move_to_detect(int n);
     void move_to_target();
     void pick_and_up();
     void move_to_finish();
     void go_down_and_open();
+    void move_to_start();
 };
-
-void Crain::move_to_start()
-{
-
-    b.set_position_sp(10);
-    b.set_speed_sp(get_speed());
-    b.run_to_abs_pos();
-}
-
-void Crain::go_up()
+ 
+ 
+void Crain::go_up(float speed)
 {
     //up
-    a.set_position_sp(-200);
-    a.set_speed_sp(700);
-    a.set_command("run-to-rel-pos");
-    while(true)
-    {
-        if (distance() > 11.0)
-        {
-            a.set_speed_sp(-2);
-            a.run_forever();
-            break;
-        }
-    }
+    a.set_speed_sp(speed*get_speed());
+    a.set_position_sp(-270);
+    a.run_to_abs_pos();
     sleep(1);
+    a.set_speed_sp(-1);
+    a.run_forever();
 }
-
-void Crain::move_to_detect()
+ 
+void Crain::move_to_detect(int n)
 {
     //move untill target is found
-    b.set_speed_sp(0.5*get_speed());
+    b.set_speed_sp(n*get_speed());
     b.run_forever();
-    while (1)
+    while (true)
     {
-        if (distance() <= 11.0)
+        if (distance() <= 9.0)
         {
             b.stop();
-            
             break;
         }
     }
 }
-
+ 
 void Crain::move_to_target()
 {
     //move to target
-    b.set_position_sp(58);
-    b.set_speed_sp(get_speed());
+    b.set_position_sp(-5);
+    b.set_speed_sp(40);
     b.run_to_rel_pos();
-    b.stop_action();
-    
-    a.set_position_sp(15);
-    a.set_speed_sp(get_speed()/4);
+ 
+    a.set_position_sp(200);
+    a.set_speed_sp(1.8*get_speed());
     a.run_to_rel_pos();
-    a.stop_action();
-
 }
-
+ 
 void Crain::pick_and_up()
 {
     //pick and up the target
     c.set_speed_sp(get_speed());
     c.run_forever();
-    sleep(1);
-    Crain::go_up();
+    sleep(0.9);
+    Crain::go_up(1.8);
 }
-
+ 
 void Crain::move_to_finish()
 {
     //move to finish
-    b.set_speed_sp(get_speed());
-    b.set_position_sp(615);
+    b.set_speed_sp(2.5*get_speed());
+    b.set_position_sp(500);
     b.run_to_abs_pos();
     sleep(1);
 }
-
+ 
 void Crain::go_down_and_open()
 {
     //go down
-    a.set_position_sp(20);
-    a.set_speed_sp(get_speed());
+    a.set_position_sp(180);
+    a.set_speed_sp(1.5*get_speed());
     a.run_to_rel_pos();
     sleep(1);
     //open tongs
@@ -199,45 +179,52 @@ void Crain::go_down_and_open()
     c.run_to_abs_pos();
     sleep(0.9);
 }
-
-void Crain::my_code()
-{
-    //a.reset();
+ 
+ 
+ 
+void Crain::yechan_code()
+{ 
+    a.reset();
     b.reset();
     c.reset();
     
-    Crain::go_up();
-    /*
+    Crain::go_up(1);
+    
     for (int i=0;i<3;i++)
     {
-        Crain::move_to_detect();
-        sleep(0.9);
-        
+        if (i==0)
+        Crain::move_to_detect(1);
+        else
+        Crain::move_to_detect(-1);
+        //sleep(0.5);
         Crain::move_to_target();
+        
         sleep(1);
         
         Crain::pick_and_up();
         Crain::move_to_finish();
         Crain::go_down_and_open();
+        sleep(1);
         if (i == 2)
-            break;
-        Crain::go_up();
-        Crain::move_to_start();
-        sleep(2);
+        break;
+        Crain::go_up(2.0);
+        sleep(0.8);
+        
     }
-    */
         
 }
-
+ 
 int main()
 {     
     Crain crain;
-    while(true){
-        if(crain.get_touch_pressed()==true){ 
-            
-        Crain* crain = new Crain;
-        crain->my_code(); //This line is for example, you should erase this ex_code in your 'real code' 
-        delete crain;
+    bool flag = true;
+    while(flag){
+        if(crain.get_touch_pressed()==true)
+        { 
+            Crain* crain = new Crain;
+            crain->yechan_code(); 
+            delete crain;
+            flag = false;
         }
     }
 }

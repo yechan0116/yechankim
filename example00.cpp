@@ -12,7 +12,6 @@ private:
     
     
 public:
-    // Hardware Configuration
     Crain():m_speed(0),  touch_q(ev3dev::INPUT_2), ultra_p(ev3dev::INPUT_1), a(ev3dev::OUTPUT_B), b(ev3dev::OUTPUT_C), c(ev3dev::OUTPUT_A)
     {
         
@@ -62,7 +61,7 @@ public:
  
     virtual int  get_speed()
     {
-        return 200;
+        return 300;
     }
     
     virtual void set_down(bool val)
@@ -99,36 +98,32 @@ public:
         m_speed = val;    
     }
 public:
-    void Victor_code();
-    void go_up(float speed);
-    void move_to_detect(int n);
-    void move_to_target();
+    void yechan_code();
+    void up();
+    void move_and_detect(int n);
+    void move_to_item();
     void pick_and_up();
     void move_to_finish();
-    void go_down_and_open();
-    void move_to_start();
+    void down();
 };
  
- 
-void Crain::go_up(float speed)
+void Crain::up()
 {
-    //up
-    a.set_speed_sp(speed*get_speed());
-    a.set_position_sp(-375);
+    a.set_speed_sp(get_speed());
+    a.set_position_sp(-270);
     a.run_to_abs_pos();
     sleep(1);
     a.set_speed_sp(-1);
     a.run_forever();
 }
  
-void Crain::move_to_detect(int n)
+void Crain::move_and_detect(int n)
 {
-    //move untill target is found
     b.set_speed_sp(n*get_speed());
     b.run_forever();
-    while (true)
+    while (1)
     {
-        if (distance() <= 11.0)
+        if (distance() <= 12.0)
         {
             b.stop();
             break;
@@ -136,94 +131,79 @@ void Crain::move_to_detect(int n)
     }
 }
  
-void Crain::move_to_target()
+void Crain::move_to_item()
 {
-    //move to target
-    b.set_position_sp(10); // -5
-    b.set_speed_sp(50); //40
+    b.set_position_sp(-3);
+    b.set_speed_sp(30);
     b.run_to_rel_pos();
  
-    
-    a.set_position_sp(190);
-    a.set_speed_sp(1.8*get_speed());
+    a.set_position_sp(200);
+    a.set_speed_sp(2*get_speed());
     a.run_to_rel_pos();
- 
 }
  
 void Crain::pick_and_up()
 {
-    //pick and up the target
     c.set_speed_sp(get_speed());
     c.run_forever();
     sleep(0.9);
-    Crain::go_up(1.8);
+    Crain::up();
 }
  
 void Crain::move_to_finish()
 {
-    //move to finish
     b.set_speed_sp(2.5*get_speed());
-    b.set_position_sp(480);
+    b.set_position_sp(490);
     b.run_to_abs_pos();
     sleep(1);
 }
  
-void Crain::go_down_and_open()
+void Crain::down()
 {
-    //go down
-    a.set_position_sp(190);
+    a.set_position_sp(180);
     a.set_speed_sp(1.5*get_speed());
     a.run_to_rel_pos();
     sleep(1);
-    //open tongs
+    
     c.set_speed_sp(get_speed());
     c.set_position_sp(0);
     c.run_to_abs_pos();
     sleep(0.9);
 }
  
- 
- 
-void Crain::Victor_code()
+void Crain::yechan_code()
 { 
     a.reset();
     b.reset();
     c.reset();
     
-    Crain::go_up(1);
-    for (int i=0;i<3;i++)
+    Crain::up();
+    
+    for (int i = 0; i < 3; i++)
     {
-        if (i==0)
-        Crain::move_to_detect(1);
-        else
-        Crain::move_to_detect(-1);
-        Crain::move_to_target();
-        
-        sleep(1);
-        
+        if (i==0) Crain::move_and_detect(1);
+        else Crain::move_and_detect(-1);
+        Crain::move_to_item();
+        sleep(0.5);
         Crain::pick_and_up();
         Crain::move_to_finish();
-        Crain::go_down_and_open();
-        if (i == 2)
-        break;
-        Crain::go_up(2.0);
-        sleep(0.8);
-        
+        Crain::down();
+        sleep(1);
+        if (i == 2) break;
+        Crain::up();
+        sleep(2);
     }
-        
 }
  
 int main()
 {     
     Crain crain;
-    bool flag = true;
-    while(flag){
-        if(crain.get_touch_pressed()==true)
+    while(1){
+        if(crain.get_touch_pressed())
         { 
             Crain* crain = new Crain;
-            crain->Victor_code(); 
+            crain->yechan_code(); 
             delete crain;
-            flag = false;
         }
     }
 }

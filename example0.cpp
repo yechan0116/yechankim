@@ -62,7 +62,7 @@ public:
  
     virtual int  get_speed()
     {
-        return 235; // 230
+        return 300; // 230
     }
     
     virtual void set_down(bool val)
@@ -113,7 +113,7 @@ void Crain::move_to_start()
 {
     //move to start
     b.set_speed_sp(2.5*get_speed());
-    b.set_position_sp(-400);
+    b.set_position_sp(-480);
     b.run_to_abs_pos();
     sleep(1);
 }
@@ -123,7 +123,7 @@ void Crain::go_up(float speed)
 {
     //up
     a.set_speed_sp(speed*get_speed());
-    a.set_position_sp(-300);
+    a.set_position_sp(-285); // -300 -320
     a.run_to_abs_pos();
     sleep(1);
     a.set_speed_sp(-1);
@@ -137,7 +137,7 @@ void Crain::move_to_detect(int n)
     b.run_forever();
     while (true)
     {
-        if (distance() <= 11.1) // && distance() >= 7.7
+        if (distance() <= 11.2) // 10.6  11.4 // && distance() >= 7.7
         {
             b.stop();
             break;
@@ -148,12 +148,12 @@ void Crain::move_to_detect(int n)
 void Crain::move_to_target()
 {
     //move to target
-    b.set_position_sp(-5); // -5
-    b.set_speed_sp(50); //
+    b.set_position_sp(-40); // -30 -5
+    b.set_speed_sp(70); // 50
     b.run_to_rel_pos();
  
     
-    a.set_position_sp(400); // 300
+    a.set_position_sp(300); // 300
     a.set_speed_sp(1.8*get_speed());
     a.run_to_rel_pos();
  
@@ -172,7 +172,7 @@ void Crain::move_to_finish()
 {
     //move to finish
     b.set_speed_sp(2.5*get_speed());
-    b.set_position_sp(485); // 480
+    b.set_position_sp(480); // 480
     b.run_to_abs_pos();
     sleep(1);
 }
@@ -180,7 +180,7 @@ void Crain::move_to_finish()
 void Crain::go_down_and_open()
 {
     //go down
-    a.set_position_sp(200); // 190
+    a.set_position_sp(190); // 190
     a.set_speed_sp(1.5*get_speed());
     a.run_to_rel_pos();
     sleep(1);
@@ -204,12 +204,12 @@ void Crain::yechan_code()
     for (int i=0;i<3;i++)
     {
         if (i==0)
-            Crain::move_to_detect(1);
+        Crain::move_to_detect(1);
         else
-            Crain::move_to_detect(-1);
+        Crain::move_to_detect(-1);
         Crain::move_to_target();
       
-        sleep(2); // 1
+        sleep(1); // 1
         
         Crain::pick_and_up();
         Crain::move_to_finish();

@@ -62,7 +62,7 @@ public:
  
     virtual int  get_speed()
     {
-        return 300; // 230
+        return 350; // 051:300 230
     }
     
     virtual void set_down(bool val)
@@ -137,7 +137,7 @@ void Crain::move_to_detect(int n)
     b.run_forever();
     while (true)
     {
-        if (distance() <= 11.2) // 10.6  11.4 // && distance() >= 7.7
+        if (distance() <= 10.6) // 05:10.6 051:11.2  11.4 // && distance() >= 7.7
         {
             b.stop();
             break;
@@ -148,7 +148,7 @@ void Crain::move_to_detect(int n)
 void Crain::move_to_target()
 {
     //move to target
-    b.set_position_sp(-35); // -40 -30 -5
+    b.set_position_sp(-30); // 05:-40 051:-35 -5
     b.set_speed_sp(70); // 50
     b.run_to_rel_pos();
  
@@ -172,7 +172,7 @@ void Crain::move_to_finish()
 {
     //move to finish
     b.set_speed_sp(2.5*get_speed());
-    b.set_position_sp(475); // 480
+    b.set_position_sp(470); // 051-475 05-480
     b.run_to_abs_pos();
     sleep(1);
 }
@@ -222,7 +222,7 @@ void Crain::yechan_code()
     }
       
 }
- 
+ // 다운한번 받자 052로
 int main()
 {     
     Crain crain;

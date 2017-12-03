@@ -107,6 +107,7 @@ public:
     void move_to_finish();
     void go_down_and_open();
     void move_to_start();
+    void move_to_target_first();
 };
  
 void Crain::move_to_start()
@@ -148,8 +149,22 @@ void Crain::move_to_detect(int n)
 void Crain::move_to_target()
 {
     //move to target
-    b.set_position_sp(-30); // 05:-40 051:-35 -5
-    b.set_speed_sp(70); // 50
+    b.set_position_sp(-40); //053:-45 052:-30 05:-40 051:-35 -5
+    b.set_speed_sp(65); // 052-70 //50
+    b.run_to_rel_pos();
+ 
+    
+    a.set_position_sp(300); // 300
+    a.set_speed_sp(1.8*get_speed());
+    a.run_to_rel_pos();
+ 
+}
+
+void Crain::move_to_target_first()
+{
+    //move to target
+    b.set_position_sp(30); // 
+    b.set_speed_sp(65); // 052-70 //50
     b.run_to_rel_pos();
  
     
@@ -172,7 +187,7 @@ void Crain::move_to_finish()
 {
     //move to finish
     b.set_speed_sp(2.5*get_speed());
-    b.set_position_sp(470); // 051-475 05-480
+    b.set_position_sp(470); // 052-470 051-475 05-480
     b.run_to_abs_pos();
     sleep(1);
 }
@@ -207,6 +222,9 @@ void Crain::yechan_code()
         Crain::move_to_detect(1);
         else
         Crain::move_to_detect(-1);
+        if (i==0)
+        Crain::move_to_target_first();
+        else        
         Crain::move_to_target();
       
         sleep(1); // 1
@@ -222,7 +240,7 @@ void Crain::yechan_code()
     }
       
 }
- // 다운한번 받자 052로
+ 
 int main()
 {     
     Crain crain;

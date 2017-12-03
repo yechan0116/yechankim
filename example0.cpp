@@ -149,7 +149,7 @@ void Crain::move_to_detect(int n)
 void Crain::move_to_target()
 {
     //move to target
-    b.set_position_sp(-40); //053:-45 052:-30 05:-40 051:-35 -5
+    b.set_position_sp(-30); // 054:-40 053:-45 052:-30 05:-40 051:-35 -5
     b.set_speed_sp(65); // 052-70 //50
     b.run_to_rel_pos();
  
@@ -187,7 +187,7 @@ void Crain::move_to_finish()
 {
     //move to finish
     b.set_speed_sp(2.5*get_speed());
-    b.set_position_sp(470); // 052-470 051-475 05-480
+    b.set_position_sp(460); //  055-460// 052-470 051-475 05-480
     b.run_to_abs_pos();
     sleep(1);
 }
